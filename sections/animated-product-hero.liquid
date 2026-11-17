@@ -1,0 +1,356 @@
+{% comment %}
+  Split hero with merchant-managed content blocks and three layered product images.
+  @example
+  Add the Animated product hero preset to the home page.
+{% endcomment %}
+
+{% liquid
+  assign fetch_priority = 'auto'
+  assign loading = 'lazy'
+  if section.index == 1
+    assign fetch_priority = 'high'
+    assign loading = 'eager'
+  endif
+
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div class="section-background color-custom-{{ section.id }}"></div>
+<section
+  class="animated-product-hero section section--{{ section.settings.section_width }} color-custom-{{ section.id }}{% if section.settings.enable_animation %} animated-product-hero--animate{% endif %}"
+  style="
+    --animated-hero-circle: {{ section.settings.circle_color }};
+    --animated-hero-content-padding: {{ section.settings.content_padding }}px;
+    --animated-hero-gap: {{ section.settings.column_gap }}px;
+    --padding-block-start: {{ section.settings.padding_block_start }}px;
+    --padding-block-end: {{ section.settings.padding_block_end }}px;
+  "
+>
+  <div class="animated-product-hero__content">
+    {% content_for 'blocks' %}
+  </div>
+
+  <div class="animated-product-hero__media" aria-label="{{ 'accessibility.featured_product' | t | escape }}">
+    <span class="animated-product-hero__circle" aria-hidden="true"></span>
+    {% for index in (1..3) %}
+      {% liquid
+        case index
+          when 1
+            assign hero_image = section.settings.image_1
+          when 2
+            assign hero_image = section.settings.image_2
+          when 3
+            assign hero_image = section.settings.image_3
+        endcase
+      %}
+      <div class="animated-product-hero__product animated-product-hero__product--{{ index }}">
+        {% if hero_image != blank %}
+          {{
+            hero_image
+            | image_url: width: 720
+            | image_tag:
+              widths: '200, 320, 480, 640, 720',
+              sizes: '(min-width: 1200px) 180px, (min-width: 750px) 15vw, 28vw',
+              loading: loading,
+              fetchpriority: fetch_priority,
+              alt: hero_image.alt
+          }}
+        {% else %}
+          {{ 'product-apparel-' | append: index | placeholder_svg_tag: 'animated-product-hero__placeholder' }}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .animated-product-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--animated-hero-gap);
+    align-items: stretch;
+    overflow: clip;
+  }
+
+  .animated-product-hero > .animated-product-hero__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    max-width: 100%;
+    padding: clamp(1.5rem, 4vw, var(--animated-hero-content-padding));
+    overflow-wrap: anywhere;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .animated-product-hero > .animated-product-hero__media {
+    position: relative;
+    z-index: 0;
+    min-width: 0;
+    height: 100%;
+    min-height: clamp(22rem, 36vw, 32rem);
+    overflow: hidden;
+    isolation: isolate;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .animated-product-hero__circle {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    width: min(82%, 28rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--animated-hero-circle);
+    transform: translate(-50%, -50%);
+  }
+
+  [dir='rtl'] .animated-product-hero__circle {
+    transform: translate(50%, -50%);
+  }
+
+  .animated-product-hero__product {
+    position: absolute;
+    z-index: 1;
+    inset-block-end: 12%;
+    inset-inline-start: 50%;
+    width: clamp(7rem, 27%, 11rem);
+    max-width: calc(100% - 2rem);
+    transform: translateX(-50%);
+  }
+
+  [dir='rtl'] .animated-product-hero__product {
+    transform: translateX(50%);
+  }
+
+  .animated-product-hero__product img,
+  .animated-product-hero__placeholder {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 88%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0.8rem 1rem rgb(0 0 0 / 14%));
+  }
+
+  .animated-product-hero__product--1 {
+    z-index: 1;
+    inset-inline-start: 34%;
+    width: clamp(6.5rem, 26%, 10rem);
+  }
+
+  .animated-product-hero__product--2 {
+    z-index: 3;
+    inset-block-end: 7%;
+    width: clamp(8rem, 32%, 12rem);
+  }
+
+  .animated-product-hero__product--3 {
+    z-index: 2;
+    inset-inline-start: 66%;
+    width: clamp(6.5rem, 26%, 10rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .animated-product-hero--animate .animated-product-hero__content > * {
+      animation: animatedHeroContentIn 700ms var(--animation-easing) forwards;
+    }
+
+    .animated-product-hero--animate .animated-product-hero__content > *:nth-child(2) { animation-delay: 100ms; }
+    .animated-product-hero--animate .animated-product-hero__content > *:nth-child(3) { animation-delay: 200ms; }
+    .animated-product-hero--animate .animated-product-hero__content > *:nth-child(4) { animation-delay: 300ms; }
+    .animated-product-hero--animate .animated-product-hero__content > *:nth-child(n + 5) { animation-delay: 400ms; }
+
+    .animated-product-hero--animate .animated-product-hero__circle {
+      animation: animatedHeroCircleIn 850ms var(--animation-easing) both;
+    }
+
+    .animated-product-hero--animate .animated-product-hero__product {
+      animation: animatedHeroProductIn 800ms var(--animation-easing) forwards;
+    }
+
+    .animated-product-hero--animate .animated-product-hero__product--1 { animation-delay: 180ms; }
+    .animated-product-hero--animate .animated-product-hero__product--2 { animation-delay: 320ms; }
+    .animated-product-hero--animate .animated-product-hero__product--3 { animation-delay: 460ms; }
+  }
+
+  @keyframes animatedHeroContentIn {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes animatedHeroCircleIn {
+    from { opacity: 0; scale: 0.75; }
+    to { opacity: 1; scale: 1; }
+  }
+
+  @keyframes animatedHeroProductIn {
+    from { opacity: 0; translate: 0 2rem; }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+  @media screen and (max-width: 749px) {
+    .animated-product-hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .animated-product-hero > .animated-product-hero__content {
+      padding-inline: min(var(--animated-hero-content-padding), var(--page-margin));
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .animated-product-hero > .animated-product-hero__media {
+      height: auto;
+      min-height: 20rem;
+      aspect-ratio: 5 / 4;
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .animated-product-hero__product {
+      width: clamp(6rem, 27%, 9rem);
+    }
+
+    .animated-product-hero__product--2 {
+      width: clamp(7rem, 31%, 10rem);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.hero",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "t:settings.image_1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "t:settings.image_2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "t:settings.image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "t:settings.animation",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "circle_color",
+      "label": "t:settings.background_color",
+      "default": "#eadcb4"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "default": "#f6f0e4"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.section_width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "t:content.padding",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_block_start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_block_end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.hero",
+      "category": "t:categories.banners",
+      "blocks": {
+        "eyebrow": {
+          "type": "text",
+          "settings": { "text": "<p>YOUR NEXT CHAPTER STARTS HERE</p>", "type_preset": "h6", "padding-block-end": 12 }
+        },
+        "heading": {
+          "type": "text",
+          "settings": { "text": "<h1>Not done yet.<br>Not even close.</h1>", "type_preset": "h1", "max_width": "normal", "padding-block-end": 12 }
+        },
+        "body": {
+          "type": "text",
+          "settings": { "text": "<p>Books and practical tools for strength, health, and a fuller life after 50. Fiction that takes you somewhere new.</p>", "type_preset": "rte", "max_width": "narrow", "padding-block-end": 24 }
+        },
+        "buttons": {
+          "type": "group",
+          "settings": { "content_direction": "row", "gap": 12, "width": "fill" },
+          "blocks": {
+            "primary": {
+              "type": "hero-button",
+              "settings": { "label": "Explore non-fiction", "link": "shopify://collections/all", "style_class": "button", "show_arrow": true }
+            },
+            "secondary": {
+              "type": "hero-button",
+              "settings": { "label": "Meet our authors", "style_class": "button-secondary", "show_arrow": true }
+            }
+          },
+          "block_order": ["primary", "secondary"]
+        }
+      },
+      "block_order": ["eyebrow", "heading", "body", "buttons"]
+    }
+  ]
+}
+{% endschema %}
