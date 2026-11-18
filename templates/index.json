@@ -1189,7 +1189,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>JH</p>",
+                            "text": "<p>JD</p>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -1260,7 +1260,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p><strong>NON-FICTION</strong></p>",
+                            "text": "<p><strong>FICTION · PEN NAME</strong></p>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -1286,7 +1286,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>John C Harris</p>",
+                            "text": "<p>J.C. DeSario</p>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -1324,7 +1324,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Strength, health, and a fuller life after 50. Practical writing from real experience.</p>",
+                    "text": "<p>A different name. A different world. Discover the fiction voice behind Proud Boomer Press.</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1350,7 +1350,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Meet John →</p>",
+                    "text": "<p>Meet J.C. DeSario →</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1619,7 +1619,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p><strong>NON-FICTION</strong></p>",
+                            "text": "<p><strong>FUTURE AUTHOR SPOTLIGHT</strong></p>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -1645,7 +1645,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>John C Harris</p>",
+                            "text": "<p>Hayden Harris</p>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -1683,7 +1683,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Strength, health, and a fuller life after 50. Practical writing from real experience.</p>",
+                    "text": "<p>Room for the next chapter. An author space reserved for future introductions.</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1709,7 +1709,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Meet John →</p>",
+                    "text": "<p>More to come</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
