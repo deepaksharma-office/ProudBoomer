@@ -175,7 +175,7 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "explore-the-press",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": false,
@@ -202,7 +202,7 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "our-authors",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": false,
@@ -229,7 +229,7 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "here-to-help",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": false,
